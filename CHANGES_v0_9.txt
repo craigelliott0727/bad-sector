@@ -1,0 +1,13 @@
+BAD SECTOR v0.9 CHANGES
+
+- Rebuilt the gameplay HUD with clear visual hierarchy.
+- Lives and sectors remaining now appear in large bordered panels for quick glances during play.
+- Low lives and the final three sectors change to urgent warning colors.
+- Score, combo, track, time, and tool information are visually secondary.
+- Reworked the opening animation into one continuous camera move:
+  1. the floppy visibly enters and locks into the front drive,
+  2. the computer rotates into a top-down view,
+  3. the same visible floppy enlarges as the camera zooms into it,
+  4. the magnetic media resolves directly into the playable sector grid,
+  5. the Recovery Bot deploys on that surface.
+- Simplified the gameplay footer so it no longer implies unexplained select/use tool steps.

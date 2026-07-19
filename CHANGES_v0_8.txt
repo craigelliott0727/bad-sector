@@ -1,0 +1,11 @@
+BAD SECTOR v0.8 CHANGES
+
+- Split the post-level flow into two deliberate screens:
+  1. Track Recovered congratulations/results screen.
+  2. Next Mission briefing with the new sector example and instructions.
+- Mission briefings no longer time out or start automatically. The game waits for Enter or Space.
+- Enlarged the new-sector preview and made fragmented-sector cracks more obvious.
+- Added a specific repair-time note when fragmented sectors are introduced.
+- Fixed the "1 sector remaining" issue when a utility cleans a sector without the normal hold-Space repair path.
+- The HUD now reconciles repair progress with the actual damaged sectors still visible on the grid.
+- A stage also completes when no damaged sectors remain, including after Beam or Backup use.

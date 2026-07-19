@@ -17,7 +17,15 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Apply Bad Sector v1.0 update
-        run: python3 patch_v1.py
+        run: |
+          python3 patch_v1.py
+          python3 - <<'PY'
+          from pathlib import Path
+          p = Path('bad_sector.c')
+          s = p.read_text(encoding='utf-8')
+          s = s.replace('center(dc,632,18,RGB(235,240,245),"ENTER CONFIRMS");else if(mode==M_SCORES)', 'center(dc,632,18,RGB(235,240,245),"ENTER CONFIRMS");}else if(mode==M_SCORES)')
+          p.write_text(s, encoding='utf-8')
+          PY
 
       - name: Install 32-bit MinGW compiler
         run: |

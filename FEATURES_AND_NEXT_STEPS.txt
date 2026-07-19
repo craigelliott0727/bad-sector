@@ -1,0 +1,20 @@
+BAD SECTOR - IMPLEMENTATION MAP
+===============================
+
+MAGNET CONCEPT
+The magnet is both a recurring environmental hazard and the final antagonist. On magnetic stages,
+the player is pulled toward or away from the center as polarity changes. Magnet enemies exert their
+own localized pull. The final stage, THE BIG MAGNET, uses several high-health magnets as a boss wave.
+
+WHY THIS FITS THE FLOPPY LIMIT
+Nearly everything is represented as short stage tables, simple geometry, compact state machines,
+and generated audio. Adding levels, enemy behaviors, text, and music patterns costs bytes rather
+than megabytes. There are no bitmap, WAV, font, runtime, or engine files.
+
+REQUIRED BEFORE SUBMISSION
+1. Compile with 32-bit MinGW-w64 and fix any compiler-specific warnings/errors.
+2. Play all twenty stages and tune spawn rates, timers, utility charges, and boss health.
+3. Verify clean launch on both 32-bit and 64-bit Windows where available.
+4. Confirm the complete decompressed submission stays below 1,474,560 bytes.
+5. Add a tiny in-game credits/help panel and final contest metadata once known.
+6. Consider UPX only if the rules allow it; the game should fit comfortably without it.

@@ -1,0 +1,16 @@
+BAD SECTOR v0.6 DESIGN NOTES
+
+The opening sequence is deliberately procedural. It does not contain a video
+or bitmap and therefore adds very little to the final executable.
+
+Tutorial progression:
+1. Boot Sector: exactly 12 ordinary damaged sectors, no spreading, one very
+   slow delayed virus, persistent partial repairs.
+2. Directory Table: more sectors and slow viruses, still no spreading.
+3. Hidden Files: introduces additional enemy behavior.
+4. Fragment Field: introduces tougher repair types.
+5. Magnetic Leak: first magnetic-field lesson.
+
+The first level should now read as a complete restoration: every visible red
+sector is part of the goal, the remaining counter reaches zero, and the disk
+surface visibly becomes clean.

@@ -1,42 +1,42 @@
-BAD SECTOR v0.5 - FEATURE-COMPLETE ALPHA
-========================================
+BAD SECTOR v0.6 - USER-FEEDBACK BUILD
+=====================================
 
-A standalone native Win32 arcade game designed for the 1,474,560-byte floppy-disk limit.
-No engine, installer, downloaded content, or external game assets are required.
+A native Win32 arcade game designed to fit on a 1.44 MB floppy disk.
+No engine, no external art, no downloaded content, and no installer.
 
-BUILD TARGET
-------------
-32-bit x86 Windows. Compile from an MSYS2/MinGW-w64 32-bit shell by running build_32bit.bat.
-The build links only against Windows system libraries (GDI32 and WINMM).
+WHAT CHANGED IN v0.6
+--------------------
+* New skippable opening animation: floppy insertion, disk scan, zoom to the
+  magnetic surface, and Recovery Bot deployment.
+* Level 1 now starts with exactly 12 damaged sectors and ends when all 12 are
+  repaired. No new corruption spreads during the first two tutorial stages.
+* Level 1 has only one very slow virus, arriving after a generous delay.
+* Enemy spawning and speed now ramp more gradually across the campaign.
+* Damaged sectors visibly clear from the bottom upward while being repaired.
+* A percentage indicator and repair beam show that holding SPACE is working.
+* Partial repair progress remains when the player moves away and returns.
+* Player is now a recognizable Recovery Bot rather than a square.
+* HUD says SECTORS REMAINING instead of showing an arbitrary recovered target.
+* Daily-Seed Challenge renamed TODAY'S DISK and explained on the title screen.
+* TODAY'S DISK uses the local calendar date, creates a repeatable fixed run,
+  and ends after one score-attack stage.
 
 CONTROLS
 --------
-Move:              WASD or arrow keys
-Repair sector:     Hold Space
-Select utility:    Q / E
-Quick-select:      1 through 7
-Use utility:       F or Enter
-Pause:             Escape
+WASD / Arrow keys  Move
+Hold SPACE          Repair the sector beneath the Recovery Bot
+Q / E               Select utility
+F / ENTER           Use selected utility
+1 through 7         Select utility directly
+ESC                  Pause / skip intro
 
-FEATURES INCLUDED
------------------
-* Twenty-stage campaign with story text and designed progression
-* Daily-seeded challenge mode
-* Optional two-player alternating mode
-* Seven utilities: antivirus pulse, sector lock, defrag beam, backup restore,
-  overclock, firewall, and emergency reboot
-* Corrupt, fragmented, infected, encrypted, unstable, and protected sectors
-* Virus, worm, trojan, cluster, read-head sweeper, and magnet enemies
-* Magnetic-field stages with polarity changes and a final Big Magnet boss
-* Combo scoring, time bonuses, protected-file bonuses, achievements, and high scores
-* Procedurally generated chiptune music and code-drawn graphics
-* Pause menu, options, three difficulty settings, screen shake, particles, and local save data
+BUILD
+-----
+Run build_32bit.bat from a MinGW 32-bit command prompt, or use:
 
-IMPORTANT TESTING NOTE
-----------------------
-This source was produced in a Linux-hosted environment without a 32-bit Windows cross-compiler.
-It therefore still needs to be compiled and play-tested on Windows. v0.5 is intended as a broad,
-feature-complete alpha, not a contest-ready final build. The next step is gameplay testing,
-compiler-error cleanup if needed, balancing, and measuring the actual EXE size.
+gcc -m32 -Os -s -ffunction-sections -fdata-sections bad_sector.c \
+    -o bad_sector.exe -mwindows -lwinmm -lgdi32 \
+    -Wl,--gc-sections
 
-The save file bad_sector.sav is created beside the executable and is not required to launch the game.
+The source has not been compiled in this Linux environment because a 32-bit
+Windows cross-compiler is unavailable here. Compile and play-test on Windows.

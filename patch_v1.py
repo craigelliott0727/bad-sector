@@ -38,16 +38,14 @@ s = s.replace('MOVE WASD/ARROWS   HOLD SPACE REPAIR   1-7 USE TOOL   ESC PAUSE',
 # Viruses hurt immediately on contact and are visually distinct bugs floating above the grid.
 s = s.replace('if(dist2(px,py,e->x,e->y)<.42f)', 'if(dist2(px,py,e->x,e->y)<.72f)')
 old_enemy = 'if(e->type==E_MAGNET)drawMagnet(dc,sx+3,sy+1,7,c);else{fill(dc,sx+6,sy+6,22,22,c);outline(dc,sx+5,sy+5,24,24,RGB(25,10,20),2);fill(dc,sx+10,sy+11,4,4,RGB(15,15,20));fill(dc,sx+20,sy+11,4,4,RGB(15,15,20));if(e->type==E_WORM)line(dc,sx+5,sy+29,sx+28,sy+29,c,4);}'
-new_enemy = '''if(e->type==E_MAGNET)drawMagnet(dc,sx+3,sy+1,7,c);else if(e->type==E_VIRUS){int bob=(int)(sin(e->timer*8)*2);/* unmistakable computer bug */fill(dc,sx+10,sy+9+bob,14,17,c);outline(dc,sx+9,sy+8+bob,16,19,RGB(20,8,14),2);fill(dc,sx+12,sy+5+bob,10,6,c);line(dc,sx+11,sy+7+bob,sx+6,sy+3+bob,c,2);line(dc,sx+22,sy+7+bob,sx+27,sy+3+bob,c,2);line(dc,sx+10,sy+13+bob,sx+4,sy+10+bob,c,2);line(dc,sx+10,sy+18+bob,sx+4,sy+21+bob,c,2);line(dc,sx+24,sy+13+bob,sx+30,sy+10+bob,c,2);line(dc,sx+24,sy+18+bob,sx+30,sy+21+bob,c,2);fill(dc,sx+13,sy+11+bob,3,3,RGB(255,235,120));fill(dc,sx+19,sy+11+bob,3,3,RGB(255,235,120));}else{fill(dc,sx+6,sy+6,22,22,c);outline(dc,sx+5,sy+5,24,24,RGB(25,10,20),2);if(e->type==E_WORM)line(dc,sx+5,sy+29,sx+28,sy+29,c,4);}'''
+new_enemy = '''if(e->type==E_MAGNET)drawMagnet(dc,sx+3,sy+1,7,c);else if(e->type==E_VIRUS){int bob=(int)(sin(e->timer*8)*2);fill(dc,sx+10,sy+9+bob,14,17,c);outline(dc,sx+9,sy+8+bob,16,19,RGB(20,8,14),2);fill(dc,sx+12,sy+5+bob,10,6,c);line(dc,sx+11,sy+7+bob,sx+6,sy+3+bob,c,2);line(dc,sx+22,sy+7+bob,sx+27,sy+3+bob,c,2);line(dc,sx+10,sy+13+bob,sx+4,sy+10+bob,c,2);line(dc,sx+10,sy+18+bob,sx+4,sy+21+bob,c,2);line(dc,sx+24,sy+13+bob,sx+30,sy+10+bob,c,2);line(dc,sx+24,sy+18+bob,sx+30,sy+21+bob,c,2);fill(dc,sx+13,sy+11+bob,3,3,RGB(255,235,120));fill(dc,sx+19,sy+11+bob,3,3,RGB(255,235,120));}else{fill(dc,sx+6,sy+6,22,22,c);outline(dc,sx+5,sy+5,24,24,RGB(25,10,20),2);if(e->type==E_WORM)line(dc,sx+5,sy+29,sx+28,sy+29,c,4);}'''
 s = s.replace(old_enemy, new_enemy)
 
-# Explicit first-virus explanation in the first mission.
 s = s.replace('The disk starts with exactly 12 damaged sectors. No new damage will appear.',
               'Repair starts automatically. A red BUG is a virus: avoid contact or use Antivirus Pulse.')
 s = s.replace('RED = standard damage. Repair all 12; no new damage will appear.',
               'SECTORS stay in the grid. Moving red BUGS are viruses - touching one costs a life.')
 
-# Replace the intro with a clear disk-read-error interaction instead of an abstract zoom.
 start = s.index('static void drawIntro(HDC dc)')
 end = s.index('static void drawGame(HDC dc)', start)
 intro = r'''static void drawIntro(HDC dc){float t=introTime;float q=t<2.6f?t/2.6f:1.0f;int diskX=(int)(760-q*335),diskY=300;char b[120];
@@ -62,20 +60,17 @@ intro = r'''static void drawIntro(HDC dc){float t=introTime;float q=t<2.6f?t/2.6
 '''
 s = s[:start] + intro + s[end:]
 
-# Intro now waits at the error prompt; Enter launches the mission and Escape cancels.
 old_intro_update = "else if(mode==M_INTRO){introTime+=dt;if(pressed(VK_SPACE)||pressed(VK_ESCAPE)||pressed(VK_RETURN)||introTime>=9.2f)mode=M_STORY;}"
 new_intro_update = "else if(mode==M_INTRO){introTime+=dt;if(introTime>=4.8f&&pressed(VK_RETURN))mode=M_STORY;else if(pressed(VK_ESCAPE))mode=M_TITLE;}"
 s = s.replace(old_intro_update, new_intro_update)
 
-# Initial-entry controls.
 needle = "else if(mode==M_SCORES){if(pressed(VK_ESCAPE)||pressed(VK_RETURN))mode=M_TITLE;}"
 replacement = "else if(mode==M_INITIALS){char*c=&highNames[initialsSlot][initialsPos];if(pressed(VK_UP)||pressed('W')){*c=(*c>='A'&&*c<'Z')?*c+1:'A';}if(pressed(VK_DOWN)||pressed('S')){*c=(*c>'A'&&*c<='Z')?*c-1:'Z';}if(pressed(VK_LEFT)||pressed('A')){if(initialsPos>0)initialsPos--;}if(pressed(VK_RIGHT)||pressed('D')||pressed(VK_RETURN)||pressed(VK_SPACE)){if(initialsPos<2)initialsPos++;else{saveData();mode=initialsReturnMode;}}if(pressed(VK_BACK)&&initialsPos>0)initialsPos--;}else if(mode==M_SCORES){if(pressed(VK_ESCAPE)||pressed(VK_RETURN))mode=M_TITLE;}"
 s = s.replace(needle, replacement)
 
-# Draw initials and names on the table.
 s = s.replace('sprintf(b,"%d.  %08d",i+1,highScores[i]);', 'sprintf(b,"%d.  %s   %08d",i+1,highNames[i],highScores[i]);')
-insert_at = s.index('}else if(mode==M_SCORES){')
-initials_draw = '''}else if(mode==M_INITIALS){int k;center(dc,75,34,RGB(105,255,195),"NEW HIGH SCORE");sprintf(b,"SCORE %08d",highScores[initialsSlot]);center(dc,145,24,RGB(255,205,90),b);center(dc,205,18,RGB(175,195,205),"WRITE YOUR INITIALS ON THE DISK LABEL");drawFloppy(dc,300,260,360,330);fill(dc,350,440,260,92,RGB(225,226,215));outline(dc,350,440,260,92,RGB(35,40,45),2);for(k=0;k<3;k++){char n[2]={highNames[initialsSlot][k],0};if(k==initialsPos)outline(dc,382+k*70,452,55,62,RGB(255,95,75),4);txt(dc,394+k*70,458,44,RGB(20,28,34),n);}center(dc,600,17,RGB(175,195,205),"UP/DOWN CHANGE LETTER   LEFT/RIGHT SELECT");center(dc,632,18,RGB(235,240,245),"ENTER CONFIRMS");'''
+insert_at = s.rindex('}else if(mode==M_SCORES){')
+initials_draw = '''}else if(mode==M_INITIALS){int k;center(dc,75,34,RGB(105,255,195),"NEW HIGH SCORE");sprintf(b,"SCORE %08d",highScores[initialsSlot]);center(dc,145,24,RGB(255,205,90),b);center(dc,205,18,RGB(175,195,205),"WRITE YOUR INITIALS ON THE DISK LABEL");drawFloppy(dc,300,260,360,330);fill(dc,350,440,260,92,RGB(225,226,215));outline(dc,350,440,260,92,RGB(35,40,45),2);for(k=0;k<3;k++){char n[2]={highNames[initialsSlot][k],0};if(k==initialsPos)outline(dc,382+k*70,452,55,62,RGB(255,95,75),4);txt(dc,394+k*70,458,44,RGB(20,28,34),n);}center(dc,600,17,RGB(175,195,205),"UP/DOWN CHANGE LETTER   LEFT/RIGHT SELECT");center(dc,632,18,RGB(235,240,245),"ENTER CONFIRMS");}'''
 s = s[:insert_at] + initials_draw + s[insert_at+1:]
 
 p.write_text(s, encoding='utf-8')

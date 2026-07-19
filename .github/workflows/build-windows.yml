@@ -1,0 +1,50 @@
+name: Build Bad Sector EXE
+
+on:
+  workflow_dispatch:
+  push:
+    paths:
+      - "bad_sector.c"
+      - ".github/workflows/build-windows.yml"
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Download repository files
+        uses: actions/checkout@v4
+
+      - name: Install 32-bit MinGW compiler
+        run: |
+          sudo apt-get update
+          sudo apt-get install -y gcc-mingw-w64-i686
+
+      - name: Compile BadSector.exe
+        run: |
+          i686-w64-mingw32-gcc \
+            -std=c99 \
+            -Os \
+            -s \
+            -mwindows \
+            -march=i686 \
+            -ffunction-sections \
+            -fdata-sections \
+            -Wl,--gc-sections \
+            -o BadSector.exe \
+            bad_sector.c \
+            -lgdi32 \
+            -lwinmm \
+            -lm
+
+      - name: Show executable size
+        run: |
+          ls -lh BadSector.exe
+          stat --format="%s bytes" BadSector.exe
+
+      - name: Save compiled EXE
+        uses: actions/upload-artifact@v4
+        with:
+          name: BadSector-Windows-32bit
+          path: BadSector.exe
+          if-no-files-found: error

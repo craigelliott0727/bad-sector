@@ -3,30 +3,41 @@ from pathlib import Path
 p = Path('bad_sector.c')
 s = p.read_text(encoding='utf-8')
 
-# Replace the awkward face-on floppy insertion with a simple edge-on slide into the drive.
+# Clear intro: a full floppy rises from below and enters the horizontal drive slot.
+# All status/error text is confined to the monitor screen.
 start = s.index('static void drawIntro(HDC dc)')
 end = s.index('static void drawGame(HDC dc)', start)
 intro = r'''static void drawIntro(HDC dc){float t=introTime;char b[120];
- /* computer body and screen */
- fill(dc,105,145,510,405,RGB(29,35,44));outline(dc,105,145,510,405,RGB(135,150,160),4);
- fill(dc,145,185,430,195,RGB(3,8,12));outline(dc,145,185,430,195,RGB(65,84,96),3);
- /* drive bezel and slot */
+ int bodyX=105,bodyY=145,bodyW=510,bodyH=405;
+ int screenX=145,screenY=185,screenW=430,screenH=195;
+ int slotX=325,slotY=445,slotW=205;
+ /* During insertion, draw the floppy first so the computer casing naturally hides the part already inside. */
+ if(t<2.8f){float q=t/2.8f;int diskY=(int)(650-q*220);drawFloppy(dc,352,diskY,150,150);}
+ /* computer body and monitor */
+ fill(dc,bodyX,bodyY,bodyW,bodyH,RGB(29,35,44));outline(dc,bodyX,bodyY,bodyW,bodyH,RGB(135,150,160),4);
+ fill(dc,screenX,screenY,screenW,screenH,RGB(3,8,12));outline(dc,screenX,screenY,screenW,screenH,RGB(65,84,96),3);
+ /* drive bezel, horizontal slot and activity light */
  fill(dc,300,420,270,72,RGB(45,53,63));outline(dc,300,420,270,72,RGB(110,125,135),3);
- fill(dc,325,445,205,13,RGB(2,5,8));outline(dc,325,445,205,13,RGB(85,100,110),2);
- fill(dc,535,467,17,17,t>2.35f&&((int)(t*7)&1)?RGB(75,245,170):RGB(35,62,58));
- if(t<2.6f){float q=t/2.6f;int right=(int)(870-q*345);int visible=right-530;
-   center(dc,70,28,RGB(82,245,190),"INSERTING DISK INTO DRIVE A:");
-   /* edge-on disk: constant thickness, aligned with the slot */
-   if(visible>0){if(visible>150)visible=150;fill(dc,right-visible,438,visible,26,RGB(62,73,86));outline(dc,right-visible,438,visible,26,RGB(175,188,198),2);fill(dc,right-visible+8,443,visible>24?visible-16:visible,5,RGB(215,218,210));}
-   /* bezel always covers the disk once it crosses the slot */
-   fill(dc,530,432,40,40,RGB(45,53,63));
-   if(q>.88f)center(dc,585,18,RGB(255,205,90),"CLICK - DISK LOCKED");
- }else if(t<4.8f){float q=(t-2.6f)/2.2f;
-   center(dc,215,23,RGB(82,245,190),"READING DRIVE A:");sprintf(b,"SCANNING TRACKS%.*s",((int)(t*4))%4,"...");center(dc,265,20,RGB(205,220,228),b);
-   fill(dc,190,315,580,18,RGB(20,38,45));fill(dc,190,315,(int)(580*q),18,RGB(75,225,175));
+ fill(dc,slotX,slotY,slotW,13,RGB(2,5,8));outline(dc,slotX,slotY,slotW,13,RGB(85,100,110),2);
+ fill(dc,535,467,17,17,t>2.45f&&((int)(t*7)&1)?RGB(75,245,170):RGB(35,62,58));
+ if(t<2.8f){float q=t/2.8f;
+   txt(dc,205,214,25,RGB(82,245,190),"INSERT DISK INTO DRIVE A:");
+   txt(dc,230,258,17,RGB(175,195,205),q<.82f?"WAITING FOR MEDIA...":"MEDIA DETECTED");
+   /* show a thin portion in the slot once the disk reaches it */
+   if(q>.72f)fill(dc,353,447,149,7,RGB(175,185,185));
+   if(q>.90f)txt(dc,285,320,18,RGB(255,205,90),"CLICK - DISK LOCKED");
+ }else if(t<4.9f){float q=(t-2.8f)/2.1f;
+   txt(dc,250,215,24,RGB(82,245,190),"READING DRIVE A:");
+   sprintf(b,"SCANNING TRACKS%.*s",((int)(t*4))%4,"...");txt(dc,255,258,18,RGB(205,220,228),b);
+   fill(dc,190,312,340,16,RGB(20,38,45));fill(dc,190,312,(int)(340*q),16,RGB(75,225,175));
  }else{
-   center(dc,205,24,RGB(255,90,80),"DISK READ ERROR");center(dc,260,20,RGB(235,240,245),"12 UNREADABLE BOOT SECTORS DETECTED");center(dc,305,18,RGB(170,195,205),"The disk cannot start until the damage is repaired.");
-   fill(dc,235,365,490,110,RGB(8,18,24));outline(dc,235,365,490,110,RGB(255,190,80),2);center(dc,385,22,RGB(255,205,95),"LAUNCH BAD SECTOR RECOVERY UTILITY?");center(dc,430,21,RGB(105,255,195),"ENTER - REPAIR DISK");center(dc,465,17,RGB(150,170,180),"ESC - RETURN TO MENU");
+   txt(dc,276,205,25,RGB(255,90,80),"DISK READ ERROR");
+   txt(dc,188,246,17,RGB(235,240,245),"12 UNREADABLE BOOT SECTORS DETECTED");
+   txt(dc,182,278,15,RGB(170,195,205),"The disk cannot start until repaired.");
+   fill(dc,178,310,364,58,RGB(8,18,24));outline(dc,178,310,364,58,RGB(255,190,80),2);
+   txt(dc,205,319,17,RGB(255,205,95),"LAUNCH RECOVERY UTILITY?");
+   txt(dc,225,344,17,RGB(105,255,195),"ENTER - REPAIR DISK");
+   txt(dc,386,370,13,RGB(150,170,180),"ESC - MENU");
  }
 }
 '''
@@ -51,4 +62,4 @@ new = '''if(nt==S_INFECTED){fill(dc,214,333,24,30,RGB(245,205,255));fill(dc,219,
 s = s.replace(old, new)
 
 p.write_text(s, encoding='utf-8')
-print('Applied Bad Sector v1.1 clarity patch')
+print('Applied Bad Sector v1.2 intro and clarity patch')

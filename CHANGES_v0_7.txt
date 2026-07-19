@@ -1,0 +1,21 @@
+BAD SECTOR v0.7
+
+PLAYTEST CHANGES
+- Rebuilt the opening animation so the floppy visibly enters a drive, the drive reads it, the camera zooms onto the circular magnetic media, and the sector grid becomes the gameplay surface.
+- Added a dedicated TRACK RECOVERED screen between missions with score bonus, story consequence, next objective, and any newly introduced sector type.
+- Greatly softened the jump from Track 1 to Track 2.
+- Tracks 1-3 do not generate spreading corruption.
+- Early enemy speed, spawn delay, spawn frequency, and maximum enemy count now increase gradually.
+- Track 2 has at most two slow viruses and 14 sectors.
+- A new sector style is introduced with an explanation during each of the first six mission briefings.
+- Added on-screen reminders for red, orange, and purple sector behavior during the first moments of their introduction levels.
+
+SECTOR PROGRESSION
+1. Red / Corrupt: standard one-second repair.
+2. Orange / Fragmented: approximately twice the repair time.
+3. Purple / Infected: releases a virus when completed.
+4. Yellow / Unstable: may spread damage to a neighbor.
+5. Green / Encrypted: can only be repaired during its bright pulse.
+6. Blue P / Protected: slow repair, high bonus value.
+
+Partial repair progress remains when the player leaves every sector type.

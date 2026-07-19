@@ -1,10 +1,10 @@
-BAD SECTOR v0.6 - USER-FEEDBACK BUILD
+BAD SECTOR v0.7 - USER-FEEDBACK BUILD
 =====================================
 
 A native Win32 arcade game designed to fit on a 1.44 MB floppy disk.
 No engine, no external art, no downloaded content, and no installer.
 
-WHAT CHANGED IN v0.6
+WHAT CHANGED IN v0.7
 --------------------
 * New skippable opening animation: floppy insertion, disk scan, zoom to the
   magnetic surface, and Recovery Bot deployment.
@@ -40,3 +40,9 @@ gcc -m32 -Os -s -ffunction-sections -fdata-sections bad_sector.c \
 
 The source has not been compiled in this Linux environment because a 32-bit
 Windows cross-compiler is unavailable here. Compile and play-test on Windows.
+
+
+V0.7 PLAYTEST FOCUS
+- Test the transition from Track 1 through Track 4.
+- Confirm each new sector briefing makes its color and behavior understandable.
+- Confirm the new intro reads as: disk inserted -> magnetic surface scanned -> zoom to sectors -> bot deployed.

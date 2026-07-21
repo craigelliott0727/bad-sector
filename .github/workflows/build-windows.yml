@@ -9,6 +9,7 @@ on:
       - "patch_v1_1.py"
       - "patch_v1_2.py"
       - "patch_v1_3.py"
+      - "patch_v1_4.py"
       - ".github/workflows/build-windows.yml"
 
 jobs:
@@ -30,6 +31,9 @@ jobs:
 
       - name: Apply Bad Sector v1.6 interface and graphics update
         run: python3 patch_v1_3.py
+
+      - name: Apply Bad Sector v1.6 initials control correction
+        run: python3 patch_v1_4.py
 
       - name: Install 32-bit MinGW compiler
         run: |

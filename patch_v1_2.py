@@ -89,7 +89,7 @@ title = r'''if(mode==M_TITLE){int x,y;float tt=(float)GetTickCount64()/1000.0f;
  center(dc,370,27,RGB(255,205,90),((int)(tt*2)&1)?"PRESS ENTER TO INSERT DISK":"PRESS ENTER TO START RECOVERY");
  center(dc,423,19,RGB(215,230,238),"C   DAILY RECOVERY DISK");sprintf(b,"2   TWO-PLAYER MODE: %s",twoPlayer?"ON":"OFF");center(dc,458,19,RGB(185,205,215),b);center(dc,493,19,RGB(185,205,215),"H   HIGH SCORES       O   OPTIONS");
  center(dc,585,17,RGB(255,115,90),"MAGNETS DISTORT. VIRUSES ATTACK. EVERY BYTE COUNTS.");center(dc,642,14,RGB(100,130,145),"NATIVE WIN32  /  PROCEDURAL GRAPHICS + AUDIO  /  NO EXTERNAL ASSETS");
- }'''
+ '''
 s = s[:title_start] + title + s[title_end:]
 
 p.write_text(s, encoding='utf-8')

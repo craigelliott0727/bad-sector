@@ -20,7 +20,7 @@ jobs:
       - name: Apply Bad Sector v1.0 update
         run: python3 patch_v1.py
 
-      - name: Apply Bad Sector v1.2 intro and clarity update
+      - name: Apply Bad Sector v1.3 intro and clarity update
         run: python3 patch_v1_1.py
 
       - name: Install 32-bit MinGW compiler
@@ -53,6 +53,6 @@ jobs:
       - name: Save compiled EXE
         uses: actions/upload-artifact@v4
         with:
-          name: BadSector-Windows-32bit-v1.2
+          name: BadSector-Windows-32bit-v1.3
           path: BadSector.exe
           if-no-files-found: error

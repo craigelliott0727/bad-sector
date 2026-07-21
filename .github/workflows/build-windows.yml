@@ -8,6 +8,7 @@ on:
       - "patch_v1.py"
       - "patch_v1_1.py"
       - "patch_v1_2.py"
+      - "patch_v1_3.py"
       - ".github/workflows/build-windows.yml"
 
 jobs:
@@ -26,6 +27,9 @@ jobs:
 
       - name: Apply Bad Sector v1.5 polish update
         run: python3 patch_v1_2.py
+
+      - name: Apply Bad Sector v1.6 interface and graphics update
+        run: python3 patch_v1_3.py
 
       - name: Install 32-bit MinGW compiler
         run: |
@@ -57,6 +61,6 @@ jobs:
       - name: Save compiled EXE
         uses: actions/upload-artifact@v4
         with:
-          name: BadSector-Windows-32bit-v1.5
+          name: BadSector-Windows-32bit-v1.6
           path: BadSector.exe
           if-no-files-found: error

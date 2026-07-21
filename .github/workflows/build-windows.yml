@@ -11,6 +11,7 @@ on:
       - "patch_v1_3.py"
       - "patch_v1_4.py"
       - "patch_v1_5.py"
+      - "patch_v1_6.py"
       - ".github/workflows/build-windows.yml"
 
 jobs:
@@ -53,6 +54,9 @@ jobs:
       - name: Apply Bad Sector v1.7 mobile firewall and graphics update
         run: python3 patch_v1_5.py
 
+      - name: Apply Bad Sector v1.8 intro, floppy and spread update
+        run: python3 patch_v1_6.py
+
       - name: Install 32-bit MinGW compiler
         run: |
           sudo apt-get update
@@ -83,6 +87,6 @@ jobs:
       - name: Save compiled EXE
         uses: actions/upload-artifact@v4
         with:
-          name: BadSector-Windows-32bit-v1.7
+          name: BadSector-Windows-32bit-v1.8
           path: BadSector.exe
           if-no-files-found: error

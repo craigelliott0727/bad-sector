@@ -10,6 +10,7 @@ on:
       - "patch_v1_2.py"
       - "patch_v1_3.py"
       - "patch_v1_4.py"
+      - "patch_v1_5.py"
       - ".github/workflows/build-windows.yml"
 
 jobs:
@@ -34,6 +35,23 @@ jobs:
 
       - name: Apply Bad Sector v1.6 initials control correction
         run: python3 patch_v1_4.py
+
+      - name: Prepare Bad Sector v1.7 patch
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          p = Path('patch_v1_5.py')
+          s = p.read_text(encoding='utf-8')
+          s = s.replace(
+              's = s[:bar_start] + new_bar + s[draw_game_after_bar:]',
+              's = s[:bar_start] + new_bar + helpers + s[draw_game_after_bar:]'
+          )
+          s = s.replace('y=649,w=126,h=66', 'y=657,w=126,h=58')
+          p.write_text(s, encoding='utf-8')
+          PY
+
+      - name: Apply Bad Sector v1.7 mobile firewall and graphics update
+        run: python3 patch_v1_5.py
 
       - name: Install 32-bit MinGW compiler
         run: |
@@ -65,6 +83,6 @@ jobs:
       - name: Save compiled EXE
         uses: actions/upload-artifact@v4
         with:
-          name: BadSector-Windows-32bit-v1.6
+          name: BadSector-Windows-32bit-v1.7
           path: BadSector.exe
           if-no-files-found: error

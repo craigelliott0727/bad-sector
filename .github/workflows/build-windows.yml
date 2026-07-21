@@ -13,6 +13,7 @@ on:
       - "patch_v1_5.py"
       - "patch_v1_6.py"
       - "patch_v1_7.py"
+      - "patch_v1_8.py"
       - ".github/workflows/build-windows.yml"
 
 jobs:
@@ -61,6 +62,9 @@ jobs:
       - name: Apply Bad Sector v1.9 HUD, toolbar, beam and 1UP update
         run: python3 patch_v1_7.py
 
+      - name: Apply Bad Sector v2.0 tool labels and death sequence
+        run: python3 patch_v1_8.py
+
       - name: Install 32-bit MinGW compiler
         run: |
           sudo apt-get update
@@ -91,6 +95,6 @@ jobs:
       - name: Save compiled EXE
         uses: actions/upload-artifact@v4
         with:
-          name: BadSector-Windows-32bit-v1.9
+          name: BadSector-Windows-32bit-v2.0
           path: BadSector.exe
           if-no-files-found: error
